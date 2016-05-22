@@ -1,5 +1,7 @@
 #include<iostream>
 #include<boost/thread.hpp>
+#include<ncurses.h>
+#include<string>
 
 int counter = 0;
 bool loop_switch = true;
@@ -10,18 +12,27 @@ void loop()
      while(loop_switch == true)
      {
           ++counter;
-          std::cout << counter << std::endl;
+          mvprintw(1,1,"LOOP: %d",counter);
+          refresh();
      }
 
 }
 
-
 int main()
 {
-     boost::thread_group tgroup;
-     std::cout << "THREAD 'T' STARTED" << std::endl;
-     tgroup.create_thread(boost::bind(&loop));
-     std::cout << "THREAD 'T' STOPPED" << std::endl;
-     tgroup.join_all();
+     initscr();
+     raw();
+     boost::thread_group tgroup; //CREATE A THREAD GROUP
+     tgroup.create_thread(boost::bind(&loop)); //CREATE A THREAD IN THE THREAD GROUP; USING BIND TO ASSIGN A FUNCTION TO IT
+     int input;
+     input = getch();
+     if(input == 'q')
+     {
+          loop_switch = false;
+          tgroup.join_all(); //LET THREAD JOIN
+          printw("MULTITHREADING EXAMPLE\n");
+          refresh();
+     }
+     endwin();
      return 0;
 }
