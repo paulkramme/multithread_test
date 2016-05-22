@@ -1,21 +1,15 @@
 #include<iostream>
 #include<boost/thread.hpp>
-#include<string>
 
 int counter = 0;
+bool loop_switch = true;
 
 void loop()
 {
-     std::string input;
-     while(true)
+     char input;
+     while(loop_switch == true)
      {
-          std::getline(std::cin, input);
-          switch(input)
-          {
-               case 'stop':
-                    goto exitloop;
-          }
-          ++counter
+          ++counter;
           std::cout << counter << std::endl;
      }
 
@@ -24,8 +18,10 @@ void loop()
 
 int main()
 {
-     boost::thread t(&loop);
+     boost::thread_group tgroup;
      std::cout << "THREAD 'T' STARTED" << std::endl;
-     exitloop:
+     tgroup.create_thread(boost::bind(&loop));
+     std::cout << "THREAD 'T' STOPPED" << std::endl;
+     tgroup.join_all();
      return 0;
 }
