@@ -1,7 +1,6 @@
 #include<iostream>
 #include<boost/thread.hpp>
 #include<ncurses.h>
-#include<string>
 
 int counter = 0;
 bool loop_switch = true;
