@@ -19,12 +19,12 @@ void loop()
 
 int main()
 {
-     initscr();
-     raw();
+     initscr(); //IGNORE: ITS NCURSES STUFF
+     raw(); //IGNORE TOO
      boost::thread_group tgroup; //CREATE A THREAD GROUP
      tgroup.create_thread(boost::bind(&loop)); //CREATE A THREAD IN THE THREAD GROUP; USING BIND TO ASSIGN A FUNCTION TO IT
      int input;
-     input = getch();
+     input = getch(); //getch is NCURSES
      if(input == 'q')
      {
           loop_switch = false;
